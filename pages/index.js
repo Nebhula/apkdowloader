@@ -251,7 +251,7 @@ export default function Home() {
                         </CardBody>
                          <div style={{ maxWidth: '100%', padding: '3em 1em', textAlign: 'center', backgroundColor: '#ffffff' }}>
 <button
-  onClick={() => window.location.href = 'https://nebhulapk.vercel.app'}
+  onClick={() => window.history.back()}
   style={{
     padding: '0.8em 2em',
     fontSize: '1.2rem',
@@ -266,6 +266,7 @@ export default function Home() {
 >
   VOLVER A NEBHULA
 </button>
+
 
 
 
