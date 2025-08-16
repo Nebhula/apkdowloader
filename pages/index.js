@@ -245,8 +245,11 @@ export default function Home() {
                             {isDownloadReady && (
                                 <Button onClick={download} color="success" fullWidth>
                                     {t("tool.download_button")}
+                                </Button>
                             )}    
+
                         </CardBody>
+                            
                     </Card>
 
 
