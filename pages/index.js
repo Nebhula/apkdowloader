@@ -245,7 +245,7 @@ export default function Home() {
                             {isDownloadReady && (
                                 <Button onClick={download} color="success" fullWidth>
                                     {t("tool.download_button")}
-                               6666666
+                               
                             )}
 
                                    6666666666666
