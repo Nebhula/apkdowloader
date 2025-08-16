@@ -249,23 +249,55 @@ export default function Home() {
                             )}    
 
                         </CardBody>
-                            <div
-  className="separator"
-  style={{ clear: 'both' }}
->
-  <a
-    href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgi21ns4EodbIcpd8NZIRsSrmFCNXZW-pLsVOQWraaee8tOlHDz2bcngCR4WG8FPU7Ii1j9numhx2XYyh68dlhaNKuCNn0S0IQ9hAa6RRXjgOkp7J754zx3jfcTTcZBjCL7_XT1e-HngY1-8NMXQGm0gJrDRaBhblG1s_bIUbzYCLdqDvsxvVOg7xpQUKs/s1600/Copia%20de%20Copia%20de%20king%20%2819%29.png"
-    style={{ display: 'block', padding: '1em 0', textAlign: 'center' }}
-  >
-    <img
-      alt=""
-      src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgi21ns4EodbIcpd8NZIRsSrmFCNXZW-pLsVOQWraaee8tOlHDz2bcngCR4WG8FPU7Ii1j9numhx2XYyh68dlhaNKuCNn0S0IQ9hAa6RRXjgOkp7J754zx3jfcTTcZBjCL7_XT1e-HngY1-8NMXQGm0gJrDRaBhblG1s_bIUbzYCLdqDvsxvVOg7xpQUKs/s1600/Copia%20de%20Copia%20de%20king%20%2819%29.png"
-      style={{ border: 0 }}
-      width="1920"
-      height="1080"
-    />
-  </a>
+                            <div style={{ maxWidth: '100%', padding: '2em 0', textAlign: 'center' }}>
+  {/* Bloque de imagen de Blogger con efecto */}
+  <div style={{ marginBottom: '2em', display: 'inline-block', transition: 'transform 0.3s', cursor: 'pointer' }}>
+    <a href="https://tu-link-para-la-imagen.com">
+      <img
+        src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgi21ns4EodbIcpd8NZIRsSrmFCNXZW-pLsVOQWraaee8tOlHDz2bcngCR4WG8FPU7Ii1j9numhx2XYyh68dlhaNKuCNn0S0IQ9hAa6RRXjgOkp7J754zx3jfcTTcZBjCL7_XT1e-HngY1-8NMXQGm0gJrDRaBhblG1s_bIUbzYCLdqDvsxvVOg7xpQUKs/s1600/Copia%20de%20Copia%20de%20king%20%2819%29.png"
+        alt="Imagen Blogger"
+        style={{
+          maxWidth: '100%',
+          height: 'auto',
+          borderRadius: '12px',
+          boxShadow: '0 8px 20px rgba(0,0,0,0.2)',
+          transition: 'transform 0.3s, box-shadow 0.3s',
+        }}
+        onMouseOver={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.3)'; }}
+        onMouseOut={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(0,0,0,0.2)'; }}
+      />
+    </a>
+  </div>
+
+  {/* Bloque "Anúnciate aquí" con efecto */}
+  <div style={{ display: 'inline-block', width: '100%', maxWidth: '1920px', cursor: 'pointer' }}>
+    <a href="https://tu-link-del-anuncio.com">
+      <div
+        style={{
+          width: '100%',
+          aspectRatio: '16/9',
+          backgroundColor: '#f9f9f9',
+          color: '#333',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          border: '2px dashed #aaa',
+          borderRadius: '12px',
+          fontSize: 'clamp(1.5rem, 4vw, 3rem)',
+          fontWeight: 'bold',
+          textAlign: 'center',
+          boxShadow: '0 6px 15px rgba(0,0,0,0.15)',
+          transition: 'transform 0.3s, box-shadow 0.3s',
+        }}
+        onMouseOver={e => { e.currentTarget.style.transform = 'scale(1.03)'; e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.25)'; }}
+        onMouseOut={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = '0 6px 15px rgba(0,0,0,0.15)'; }}
+      >
+        Tu anuncio publicitario aquí
+      </div>
+    </a>
+  </div>
 </div>
+
 
                     </Card>
 
