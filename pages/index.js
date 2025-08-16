@@ -255,7 +255,7 @@ export default function Home() {
 
                     </Card>
 <br/>
-<div style={{ width: '100%', margin: 0, padding: 0, textAlign: 'center', backgroundColor: '#ffffff' }}>
+<div style={{ width: '100%', margin: 0, padding: 0, textAlign: 'center', backgroundColor: '#' }}>
   {/* Bloque de imagen de Blogger con función atrás */}
   <div
     style={{
