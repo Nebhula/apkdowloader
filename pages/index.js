@@ -277,7 +277,7 @@ export default function Home() {
       }}
     />
   </div>
-<br/>
+
 {/* Bloque de imagen de Blogger con link */}
 <div style={{ width: '100%' }}>
   <a href="https://avianuncios.com/usuario-pro" style={{ display: 'block', width: '100%' }}>
@@ -295,7 +295,7 @@ export default function Home() {
   </a>
 </div>
 
-
+<br/>
 
                                 
   {/* Bloque "Anúnciate aquí" */}
