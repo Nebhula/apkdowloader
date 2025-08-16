@@ -246,15 +246,12 @@ export default function Home() {
                                 <Button onClick={download} color="success" fullWidth>
                                     {t("tool.download_button")}
                                
-                            )}
-
-                                   6666666666666
+                            )}    
                         </CardBody>
 
-                            666666666666666666
+                            
                     </Card>
 
-99999999999999999999999999999999999999999999999999999999
 
 
                             
