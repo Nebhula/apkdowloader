@@ -19,7 +19,7 @@ const ThemeSwitcher = () => {
     return (
         <div>
             <Button isIconOnly variant="faded" aria-label="Switch to dark mode" onClick={toggleTheme}>
-                {theme === 'light' ? <svg
+                {theme === 'dark' ? <svg
                     aria-hidden="true"
                     focusable="false"
                     height="1em"
