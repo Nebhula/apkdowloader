@@ -252,7 +252,7 @@ export default function Home() {
                          <div style={{ maxWidth: '100%', padding: '3em 1em', textAlign: 'center', backgroundColor: '#ffffff' }}>
   {/* Bloque de imagen de Blogger */}
   <div style={{ marginBottom: '2em', display: 'inline-block', maxWidth: '1920px', width: '100%' }}>
-    <a href="https://tu-link-para-la-imagen.com">
+    <a href="https://www.nebhula.com/">
       <img
         src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgtr3TVkYIiHBJxve5EaXvwRZIX7QsAYj4XOYqpApap7S3ch-fXqDdGAKS-_ZC4-HYibnPB9GS8MH97Wzpdl6C3Flb7hyphenhyphenlzK32HWoXQk_HNZJXA3flgx-mOJaGYC5FFRKK-zeBlLaUMP8TJdayNvsy53V3PqedwYyrTmJvccyQPphJ0hora7-95dL8BxCg/s1600/Copia%20de%20Copia%20de%20king%20%2820%29.png"
         alt="Imagen Blogger"
