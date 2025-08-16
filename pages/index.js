@@ -249,7 +249,13 @@ export default function Home() {
                             )}    
 
                         </CardBody>
-                         <div style={{ maxWidth: '100%', padding: '3em 1em', textAlign: 'center', backgroundColor: '#ffffff' }}>
+                         
+
+
+
+                    </Card>
+
+<div style={{ maxWidth: '100%', padding: '3em 1em', textAlign: 'center', backgroundColor: '#' }}>
 
 
 
@@ -307,12 +313,6 @@ export default function Home() {
     </a>
   </div>
 </div>
-
-
-
-                    </Card>
-
-
 
                             
                 </div>
