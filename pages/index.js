@@ -247,6 +247,9 @@ export default function Home() {
                                     {t("tool.download_button")}
                                 </Button>
                             )}    
+
+                        </CardBody>
+                         <div style={{ maxWidth: '100%', padding: '3em 1em', textAlign: 'center', backgroundColor: '#ffffff' }}>
 <button
   onClick={() => window.location.href = 'https://nebhulapk.vercel.app'}
   style={{
@@ -263,8 +266,9 @@ export default function Home() {
 >
   VOLVER A NEBHULA
 </button>
-                        </CardBody>
-                         <div style={{ maxWidth: '100%', padding: '3em 1em', textAlign: 'center', backgroundColor: '#ffffff' }}>
+
+
+
   {/* Bloque de imagen de Blogger */}
   <div style={{ marginBottom: '2em', display: 'inline-block', maxWidth: '1920px', width: '100%' }}>
     <a href="https://www.nebhula.com/">
