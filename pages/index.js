@@ -249,9 +249,9 @@ export default function Home() {
                             )}    
 
                         </CardBody>
-                            <div style={{ maxWidth: '100%', padding: '2em 0', textAlign: 'center' }}>
-  {/* Bloque de imagen de Blogger con efecto */}
-  <div style={{ marginBottom: '2em', display: 'inline-block', transition: 'transform 0.3s', cursor: 'pointer' }}>
+                         <div style={{ maxWidth: '100%', padding: '3em 1em', textAlign: 'center', backgroundColor: '#ffffff' }}>
+  {/* Bloque de imagen de Blogger */}
+  <div style={{ marginBottom: '2em', display: 'inline-block', maxWidth: '1920px', width: '100%' }}>
     <a href="https://tu-link-para-la-imagen.com">
       <img
         src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgi21ns4EodbIcpd8NZIRsSrmFCNXZW-pLsVOQWraaee8tOlHDz2bcngCR4WG8FPU7Ii1j9numhx2XYyh68dlhaNKuCNn0S0IQ9hAa6RRXjgOkp7J754zx3jfcTTcZBjCL7_XT1e-HngY1-8NMXQGm0gJrDRaBhblG1s_bIUbzYCLdqDvsxvVOg7xpQUKs/s1600/Copia%20de%20Copia%20de%20king%20%2819%29.png"
@@ -261,16 +261,15 @@ export default function Home() {
           height: 'auto',
           borderRadius: '12px',
           boxShadow: '0 8px 20px rgba(0,0,0,0.2)',
-          transition: 'transform 0.3s, box-shadow 0.3s',
+          display: 'block',
+          margin: '0 auto',
         }}
-        onMouseOver={e => { e.currentTarget.style.transform = 'scale(1.05)'; e.currentTarget.style.boxShadow = '0 12px 24px rgba(0,0,0,0.3)'; }}
-        onMouseOut={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(0,0,0,0.2)'; }}
       />
     </a>
   </div>
 
-  {/* Bloque "Anúnciate aquí" con efecto */}
-  <div style={{ display: 'inline-block', width: '100%', maxWidth: '1920px', cursor: 'pointer' }}>
+  {/* Bloque "Anúnciate aquí" */}
+  <div style={{ display: 'inline-block', width: '100%', maxWidth: '1920px' }}>
     <a href="https://tu-link-del-anuncio.com">
       <div
         style={{
@@ -287,16 +286,15 @@ export default function Home() {
           fontWeight: 'bold',
           textAlign: 'center',
           boxShadow: '0 6px 15px rgba(0,0,0,0.15)',
-          transition: 'transform 0.3s, box-shadow 0.3s',
+          margin: '0 auto',
         }}
-        onMouseOver={e => { e.currentTarget.style.transform = 'scale(1.03)'; e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.25)'; }}
-        onMouseOut={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.boxShadow = '0 6px 15px rgba(0,0,0,0.15)'; }}
       >
         Tu anuncio publicitario aquí
       </div>
     </a>
   </div>
 </div>
+
 
 
                     </Card>
