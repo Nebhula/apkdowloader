@@ -250,22 +250,7 @@ export default function Home() {
 
                         </CardBody>
                          <div style={{ maxWidth: '100%', padding: '3em 1em', textAlign: 'center', backgroundColor: '#ffffff' }}>
-<button
-  onClick={() => window.history.back()}
-  style={{
-    padding: '0.8em 2em',
-    fontSize: '1.2rem',
-    fontWeight: 'bold',
-    borderRadius: '10px',
-    border: 'none',
-    backgroundColor: '#0070f3',
-    color: '#fff',
-    cursor: 'pointer',
-    boxShadow: '0 4px 10px rgba(0,0,0,0.2)',
-  }}
->
-  VOLVER A NEBHULA
-</button>
+
 
 
 
