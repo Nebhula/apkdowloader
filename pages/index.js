@@ -255,41 +255,32 @@ export default function Home() {
 
                     </Card>
 
-<div style={{ maxWidth: '100%', padding: '3em 1em', textAlign: 'center', backgroundColor: '#' }}>
-
-
-
-
-
+<div style={{ width: '100%', margin: 0, padding: 0, textAlign: 'center', backgroundColor: '#ffffff' }}>
   {/* Bloque de imagen de Blogger con función atrás */}
-<div
-  style={{
-    marginBottom: '2em',
-    display: 'inline-block',
-    maxWidth: '1920px',
-    width: '100%',
-    cursor: 'pointer',
-  }}
-  onClick={() => window.history.back()}
->
-  <img
-    src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgtr3TVkYIiHBJxve5EaXvwRZIX7QsAYj4XOYqpApap7S3ch-fXqDdGAKS-_ZC4-HYibnPB9GS8MH97Wzpdl6C3Flb7--lzK32HWoXQk_HNZJXA3flgx-mOJaGYC5FFRKK-zeBlLaUMP8TJdayNvsy53V3PqedwYyrTmJvccyQPphJ0hora7-95dL8BxCg/s1600/Copia%20de%20Copia%20de%20king%20%2820%29.png"
-    alt="Imagen Blogger"
+  <div
     style={{
-      maxWidth: '100%',
-      height: 'auto',
-      borderRadius: '12px',
-      boxShadow: '0 8px 20px rgba(0,0,0,0.2)',
-      display: 'block',
-      margin: '0 auto',
+      marginBottom: '1.5em',
+      width: '100%',
+      cursor: 'pointer',
     }}
-  />
-</div>
-
+    onClick={() => window.history.back()}
+  >
+    <img
+      src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgtr3TVkYIiHBJxve5EaXvwRZIX7QsAYj4XOYqpApap7S3ch-fXqDdGAKS-_ZC4-HYibnPB9GS8MH97Wzpdl6C3Flb7--lzK32HWoXQk_HNZJXA3flgx-mOJaGYC5FFRKK-zeBlLaUMP8TJdayNvsy53V3PqedwYyrTmJvccyQPphJ0hora7-95dL8BxCg/s1600/Copia%20de%20Copia%20de%20king%20%2820%29.png"
+      alt="Imagen Blogger"
+      style={{
+        width: '100%',
+        height: 'auto',
+        borderRadius: '12px',
+        boxShadow: '0 8px 20px rgba(0,0,0,0.2)',
+        display: 'block',
+      }}
+    />
+  </div>
 
   {/* Bloque "Anúnciate aquí" */}
-  <div style={{ display: 'inline-block', width: '100%', maxWidth: '1920px' }}>
-    <a href="https://tu-link-del-anuncio.com">
+  <div style={{ width: '100%' }}>
+    <a href="https://tu-link-del-anuncio.com" style={{ display: 'block', width: '100%' }}>
       <div
         style={{
           width: '100%',
@@ -301,11 +292,10 @@ export default function Home() {
           alignItems: 'center',
           border: '2px dashed #aaa',
           borderRadius: '12px',
-          fontSize: 'clamp(1.5rem, 4vw, 3rem)',
+          fontSize: 'clamp(1.2rem, 4vw, 2.5rem)',
           fontWeight: 'bold',
           textAlign: 'center',
           boxShadow: '0 6px 15px rgba(0,0,0,0.15)',
-          margin: '0 auto',
         }}
       >
         Tu anuncio publicitario aquí
@@ -313,6 +303,7 @@ export default function Home() {
     </a>
   </div>
 </div>
+
 
                             
                 </div>
