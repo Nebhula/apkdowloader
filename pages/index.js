@@ -249,7 +249,24 @@ export default function Home() {
                             )}    
 
                         </CardBody>
-                            <div class="separator" style="clear: both;"><a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgi21ns4EodbIcpd8NZIRsSrmFCNXZW-pLsVOQWraaee8tOlHDz2bcngCR4WG8FPU7Ii1j9numhx2XYyh68dlhaNKuCNn0S0IQ9hAa6RRXjgOkp7J754zx3jfcTTcZBjCL7_XT1e-HngY1-8NMXQGm0gJrDRaBhblG1s_bIUbzYCLdqDvsxvVOg7xpQUKs/s1600/Copia%20de%20Copia%20de%20king%20%2819%29.png" style="display: block; padding: 1em 0; text-align: center; "><img alt="" border="0" data-original-height="1080" data-original-width="1920" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgi21ns4EodbIcpd8NZIRsSrmFCNXZW-pLsVOQWraaee8tOlHDz2bcngCR4WG8FPU7Ii1j9numhx2XYyh68dlhaNKuCNn0S0IQ9hAa6RRXjgOkp7J754zx3jfcTTcZBjCL7_XT1e-HngY1-8NMXQGm0gJrDRaBhblG1s_bIUbzYCLdqDvsxvVOg7xpQUKs/s1600/Copia%20de%20Copia%20de%20king%20%2819%29.png"/></a></div>
+                            <div
+  className="separator"
+  style={{ clear: 'both' }}
+>
+  <a
+    href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgi21ns4EodbIcpd8NZIRsSrmFCNXZW-pLsVOQWraaee8tOlHDz2bcngCR4WG8FPU7Ii1j9numhx2XYyh68dlhaNKuCNn0S0IQ9hAa6RRXjgOkp7J754zx3jfcTTcZBjCL7_XT1e-HngY1-8NMXQGm0gJrDRaBhblG1s_bIUbzYCLdqDvsxvVOg7xpQUKs/s1600/Copia%20de%20Copia%20de%20king%20%2819%29.png"
+    style={{ display: 'block', padding: '1em 0', textAlign: 'center' }}
+  >
+    <img
+      alt=""
+      src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgi21ns4EodbIcpd8NZIRsSrmFCNXZW-pLsVOQWraaee8tOlHDz2bcngCR4WG8FPU7Ii1j9numhx2XYyh68dlhaNKuCNn0S0IQ9hAa6RRXjgOkp7J754zx3jfcTTcZBjCL7_XT1e-HngY1-8NMXQGm0gJrDRaBhblG1s_bIUbzYCLdqDvsxvVOg7xpQUKs/s1600/Copia%20de%20Copia%20de%20king%20%2819%29.png"
+      style={{ border: 0 }}
+      width="1920"
+      height="1080"
+    />
+  </a>
+</div>
+
                     </Card>
 
 
