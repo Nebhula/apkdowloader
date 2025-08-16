@@ -245,14 +245,10 @@ export default function Home() {
                             {isDownloadReady && (
                                 <Button onClick={download} color="success" fullWidth>
                                     {t("tool.download_button")}
-                                </Button>
-                                <Button onClick={download} color="success" fullWidth>
-                                    {t("tool.download_button")}
-                                </Button>
-                             RRRRRRR
+                               6666666
                             )}
 
-
+                                   6666666666666
                         </CardBody>
 
                             666666666666666666
