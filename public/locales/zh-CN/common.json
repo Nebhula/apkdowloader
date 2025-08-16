@@ -1,0 +1,56 @@
+{
+    "website_name": "APK Downloader",
+    "Additional App Information": "Additional App Information",
+    "Category": "类别",
+    "content": {
+        "html": "<p>在Android的世界中，下载应用应该是一件轻而易举的事情，对吧？这就是APK Downloader出现的地方，它为寻找并下载他们最喜爱的应用程序而无需费力的用户提供了一个无缝的体验。但是它是如何工作的呢？让我们深入了解APK Downloader的复杂性，并揭示其效率和安全性背后的秘密。</p><h2>发现APK Downloader的魔力</h2><p>APK Downloader充当着通往Google Play商店上的大量应用程序和游戏宝库的门户。借助简单的界面和闪电般快速的搜索功能，它简化了查找和下载应用程序的过程，无与伦比的轻松。</p><h3>快速高效的应用程序搜索</h3><p>不再需要无尽的滚动或在杂乱的分类中导航。APK Downloader允许用户通过名称或包名称迅速搜索应用程序。无论您是在寻找最新的游戏感觉还是提高效率的生产力工具，APK Downloader都能在几秒钟内完成任务。</p><h3>无缝重定向到应用信息</h3><p>一旦您确定了所需的应用程序，APK Downloader将确保无缝地转到应用信息页面。无论包名称是否完全匹配，还是有多个结果需要筛选，您都会被迅速重定向到应用程序的详细信息，准备好开始无忧的下载流程。</p><h3>搜索选项的灵活性</h3><p>遇到无效的包名称？没问题。APK Downloader提供了通过应用程序名称搜索的灵活性，确保没有应用程序是无法触及的。其直观的设计适用于所有级别的用户，使每个人都能轻松发现应用程序。</p>"
+    },
+    "Developer": "开发者",
+    "Downloads": "下载次数",
+    "faqs": [
+        {
+            "title": "我可以下载区域限制的应用程序吗？",
+            "content": "当然可以！APK Downloader打破了地理障碍，允许用户免费下载区域限制的应用程序和游戏，无论他们身在何处。只需搜索所需的应用程序，然后点击下载按钮，即可尽情享受您最喜爱的内容的无限访问。"
+        },
+        {
+            "title": "APK Downloader安全吗？",
+            "content": "请放心，APK Downloader将您的安全置于首位。它向用户提供直接从Google Play商店获取的原始XAPK和APK文件，保证真实性和完整性。告别对恶意软件或篡改文件的担忧，APK Downloader始终为您保驾护航。"
+        },
+        {
+            "title": "我需要帐户才能下载吗？",
+            "content": "繁琐的帐户设置已经一去不复返了。APK Downloader采用无需登录的政策，允许用户下载应用程序和游戏，而无需创建帐户。您的隐私和便利至关重要，APK Downloader确保您拥有顺畅、无帐户的体验。"
+        },
+        {
+            "title": "我可以下载付费应用吗？",
+            "content": "您不能下载付费应用"
+        }
+    ],
+    "icon image": "图标图像",
+    "Invalid input format. Please enter a valid package name or Google Play Store URL.": "无效的输入格式。请输入有效的包名称或Google Play商店URL。",
+    "navlinks": [
+        {
+            "href": "/",
+            "title": "主页"
+        },
+        {
+            "href": "#comments",
+            "title": "评论"
+        }
+    ],
+    "Oops, downloading isn't possible at the moment due to issues such as an invalid package, non-compatibility, or being in the non-free category.": "抱歉，由于诸如无效包、不兼容或属于非免费类别等问题，目前无法下载。",
+    "Package Name": "包名称",
+    "seo": {
+        "title": "为Android下载免费APK | 安全 & 快速 | APK Downloader",
+        "description": "使用APK Downloader快速、安全地下载免费Android应用程序/游戏。没有限制！立即获取最佳的APK/XAPK。",
+        "keywords": "apk下载，无区域限制apk下载"
+    },
+    "tool": {
+        "download_button": "立即下载",
+        "generate_download": "生成下载链接",
+        "input_label": "包名称或Google Play URL",
+        "input_placeholder": "org.telegram.messenger或https://play.google.com/store/apps/details?id=org.telegram.messenger",
+        "title": "包名称或Google Play URL"
+    },
+    "Update": "更新",
+    "Version": "版本"
+}

@@ -1,0 +1,43 @@
+{
+    "name": "apk-downloader",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint",
+        "postbuild": "next-sitemap"
+    },
+    "dependencies": {
+        "@nextui-org/accordion": "^2.0.32",
+        "@nextui-org/navbar": "^2.0.30",
+        "@nextui-org/react": "^2.3.6",
+        "@nextui-org/system": "^2.1.2",
+        "@nextui-org/theme": "^2.2.3",
+        "disqus-react": "^1.1.5",
+        "flag-icons": "^7.2.1",
+        "framer-motion": "^11.1.9",
+        "google-play-scraper": "^10.0.0",
+        "i18next": "^23.11.3",
+        "next": "14.0.0",
+        "next-i18next": "^15.3.0",
+        "next-pwa": "^5.6.0",
+        "next-sitemap": "^4.2.3",
+        "next-themes": "^0.3.0",
+        "nextjs-google-analytics": "^2.3.3",
+        "react": "18",
+        "react-dom": "18",
+        "react-i18next": "^14.1.1"
+    },
+    "devDependencies": {
+        "@tailwindcss/typography": "^0.5.13",
+        "autoprefixer": "^10.4.19",
+        "eslint": "8",
+        "eslint-config-next": "14.0.0",
+        "eslint-config-prettier": "9.0.0",
+        "postcss": "^8.4.38",
+        "prettier": "3.0.3",
+        "tailwindcss": "^3.4.3"
+    }
+}
