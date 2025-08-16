@@ -278,6 +278,30 @@ export default function Home() {
     />
   </div>
 
+{/* Bloque de imagen de Blogger con función atrás */}
+  <div
+    style={{
+      marginBottom: '1.5em',
+      width: '100%',
+      cursor: 'pointer',
+    }}
+    onClick={() => window.history.back()}
+  >
+    <img
+      src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjg7LPnGp9yWlgV7MZ8oeHiiWveZKdYqZibqGB0di7OTMcdMA7yz1MDBPDjY8MQe1qp2cEG4o3H6yjgazhDKwoLDJevRhDiRFvJGMpSvSj0e76236KdzCm2MRLcu4p9Bs4Okpzk5bW9RdJf6ah4M14kUx1pMVZci9KZ_nfMTPm0CsEF3LztsIDOCAe9OxE/s1600/Copia%20de%20Copia%20de%20king%20%2822%29.png"
+      alt="Imagen Blogger"
+      style={{
+        width: '100%',
+        height: 'auto',
+        borderRadius: '12px',
+        boxShadow: '0 8px 20px rgba(0,0,0,0.2)',
+        display: 'block',
+      }}
+    />
+  </div>
+
+
+                                
   {/* Bloque "Anúnciate aquí" */}
   <div style={{ width: '100%' }}>
     <a href="https://tu-link-del-anuncio.com" style={{ display: 'block', width: '100%' }}>
