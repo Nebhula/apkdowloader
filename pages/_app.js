@@ -20,7 +20,7 @@ const App = ({ Component, pageProps }) => {
         <>
             <GoogleAnalytics trackPageViews strategy="lazyOnload" />
             <NextUIProvider>
-                <NextThemesProvider attribute="class" defaultTheme="dark">
+                <NextThemesProvider attribute="class" defaultTheme="light">
                     <React.Fragment>
                         <Head>
                             <meta name="viewport" content="width=device-width, initial-scale=1" />
