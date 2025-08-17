@@ -259,7 +259,8 @@ export default function Home() {
     }
   }}
 >
-  VOLVER A NEBHULA
+  
+      Volver
 </Button>
                         </CardBody>
                          
@@ -269,15 +270,15 @@ export default function Home() {
                     </Card>
 <br/>
 <div style={{ width: '100%', margin: 0, padding: 0, textAlign: 'center', backgroundColor: '#' }}>
-  {/* Bloque de imagen de Blogger con función atrás */}
-  <div
-    style={{
-      marginBottom: '1.5em',
-      width: '100%',
-      cursor: 'pointer',
-    }}
-    onClick={() => window.history.back()}
-  >
+  {/* Bloque de imagen de Blogger con link */}
+<div
+  style={{
+    marginBottom: '1.5em',
+    width: '100%',
+    cursor: 'pointer',
+  }}
+>
+  <a href="https://tudestino.com" target="_blank" rel="noopener noreferrer">
     <img
       src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgtr3TVkYIiHBJxve5EaXvwRZIX7QsAYj4XOYqpApap7S3ch-fXqDdGAKS-_ZC4-HYibnPB9GS8MH97Wzpdl6C3Flb7--lzK32HWoXQk_HNZJXA3flgx-mOJaGYC5FFRKK-zeBlLaUMP8TJdayNvsy53V3PqedwYyrTmJvccyQPphJ0hora7-95dL8BxCg/s1600/Copia%20de%20Copia%20de%20king%20%2820%29.png"
       alt="Imagen Blogger"
@@ -289,7 +290,9 @@ export default function Home() {
         display: 'block',
       }}
     />
-  </div>
+  </a>
+</div>
+
 
 {/* Bloque de imagen de Blogger con link */}
 <div style={{ width: '100%' }}>
