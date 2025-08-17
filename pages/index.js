@@ -305,7 +305,7 @@ export default function Home() {
         style={{
           width: '100%',
           aspectRatio: '16/9',
-          backgroundColor: '#f9f9f9',
+          backgroundColor: '#',
           color: '#333',
           display: 'flex',
           justifyContent: 'center',
