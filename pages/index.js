@@ -247,16 +247,25 @@ export default function Home() {
                                     {t("tool.download_button")}
                                 </Button>
                             )}    
+
 <Button
   color="secondary"
   fullWidth
   onClick={() => {
     const ref = document.referrer;
-    // Verifica que venga de Nebhula y de la sección específica
-    if (ref.includes("nebhula.com#seccion-especifica")) {
-      window.history.back();
+
+    // Revisamos si viene de Nebhula
+    if (ref.includes("nebhula.com")) {
+      // Intentamos volver atrás
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        // Si no hay historial, redirigimos a la sección específica
+        window.location.href = "https://nebhula.com#seccion-especifica";
+      }
     } else {
-      console.log("No viene de la sección específica de Nebhula, no hacemos nada");
+      // No viene de Nebhula: redirigimos al fallback
+      window.location.href = "https://nebhula.com#seccion-especifica";
     }
   }}
 >
