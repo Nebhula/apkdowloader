@@ -247,14 +247,10 @@ export default function Home() {
                                     {t("tool.download_button")}
                                 </Button>
                             )}    
-{/* Botón de volver, igual estilo */}
-  <Button
-    variant="faded"
-    onClick={() => window.history.back()}
-  >
-    <ArrowLeftIcon className="w-4 h-4 mr-2" />
-    VOLVER A NEBHULA
-  </Button>
+{/* NUEVO BOTÓN DE VOLVER ABAJO */}
+<Button onClick={() => window.history.back()} color="secondary" fullWidth className="mt-2">
+    {t("tool.go_back_button")}
+</Button>
                         </CardBody>
                          
 
