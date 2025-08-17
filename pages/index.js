@@ -249,7 +249,7 @@ export default function Home() {
                             )}    
 {/* NUEVO BOTÓN DE VOLVER ABAJO */}
 <Button onClick={() => window.history.back()} color="secondary" fullWidth className="mt-2">
-    {t("tool.go_back_button")}
+     VOLVER A NEBHULA
 </Button>
                         </CardBody>
                          
