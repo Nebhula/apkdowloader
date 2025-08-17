@@ -247,9 +247,19 @@ export default function Home() {
                                     {t("tool.download_button")}
                                 </Button>
                             )}    
-{/* NUEVO BOTÓN DE VOLVER ABAJO */}
-<Button onClick={() => window.history.back()} color="secondary" fullWidth className="mt-2">
-     VOLVER A NEBHULA
+<Button
+  color="secondary"
+  fullWidth
+  onClick={() => {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      // Fallback seguro: redirige a Nebhula
+      window.location.href = "https://nebhula.com#seccion-especifica";
+    }
+  }}
+>
+  VOLVER A NEBHULA
 </Button>
                         </CardBody>
                          
