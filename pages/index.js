@@ -251,17 +251,18 @@ export default function Home() {
   color="secondary"
   fullWidth
   onClick={() => {
-    if (window.history.length > 1) {
+    const ref = document.referrer;
+    // Verifica que venga de Nebhula y de la sección específica
+    if (ref.includes("nebhula.com#seccion-especifica")) {
       window.history.back();
     } else {
-      // Fallback seguro: redirige a Nebhula
-      window.location.href = "https://nebhula.com#seccion-especifica";
+      console.log("No viene de la sección específica de Nebhula, no hacemos nada");
     }
   }}
 >
-  
-      Volver
+  Volver
 </Button>
+
                         </CardBody>
                          
 
