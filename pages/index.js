@@ -310,7 +310,6 @@ export default function Home() {
   const [currentFilter, setCurrentFilter] = useState("all");
   const [currentSort, setCurrentSort] = useState("relevance");
 
-  // Simulación de búsqueda
   const performSearch = () => {
     setLoading(true);
     setTimeout(() => {
@@ -339,12 +338,10 @@ export default function Home() {
         },
       ];
 
-      // Filtrado
       if (currentFilter !== "all") {
         data = data.filter((d) => d.category === currentFilter);
       }
 
-      // Ordenamiento
       if (currentSort === "popularity") {
         data = data.sort((a, b) => b.downloads - a.downloads);
       } else if (currentSort === "rating") {
@@ -353,7 +350,7 @@ export default function Home() {
 
       setResults(data);
       setLoading(false);
-    }, 1500);
+    }, 1000);
   };
 
   const copyToClipboard = (text) => {
@@ -369,6 +366,95 @@ export default function Home() {
 
   return (
     <div className="package-finder">
+      <div className="package-search-container">
+        <input
+          type="text"
+          placeholder="Buscar aplicaciones o juegos..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyUp={(e) => e.key === "Enter" && performSearch()}
+        />
+        <button onClick={performSearch}>Buscar</button>
+      </div>
+
+      <div className="package-filters">
+        {[
+          { key: "all", label: "Todos" },
+          { key: "app", label: "Aplicaciones" },
+          { key: "game", label: "Juegos" },
+        ].map((f) => (
+          <button
+            key={f.key}
+            className={`package-filter-btn ${
+              currentFilter === f.key ? "active" : ""
+            }`}
+            onClick={() => setCurrentFilter(f.key)}
+          >
+            {f.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="package-results-header">
+        <div>{results.length} resultados</div>
+        <select
+          className="package-sort-select"
+          value={currentSort}
+          onChange={(e) => setCurrentSort(e.target.value)}
+        >
+          <option value="relevance">Relevancia</option>
+          <option value="popularity">Popularidad</option>
+          <option value="rating">Puntuación</option>
+        </select>
+      </div>
+
+      <div className="package-apps-grid">
+        {loading && <p>Cargando...</p>}
+        {!loading &&
+          results.map((item) => (
+            <div className="package-app-card" key={item.id}>
+              <div className="package-app-header">
+                <div className="package-app-icon">
+                  <img src={item.iconUrl} alt={item.name} />
+                </div>
+                <div>
+                  <div>{item.name}</div>
+                  <div>{item.developer}</div>
+                </div>
+              </div>
+              <p>{item.description}</p>
+              <div>{item.packageName}</div>
+              <button onClick={() => copyToClipboard(item.packageName)}>
+                Copiar paquete
+              </button>
+              <button onClick={() => redirectToDownload(item.packageName)}>
+                Descargar APK
+              </button>
+              <div className="package-app-footer">
+                <span>⭐ {item.rating}</span>
+                <span>{item.downloads.toLocaleString()} descargas</span>
+                <span>{item.category}</span>
+              </div>
+            </div>
+          ))}
+      </div>
+
+      {showNotification && (
+        <div className="notification">📋 Paquete copiado</div>
+      )}
+
+      {showRedirectModal && (
+        <div className="modal">
+          <div className="modal-content">
+            <h3>Redireccionando</h3>
+            <p>
+              Serás redirigido a descargar <b>{redirectPackage}</b>
+            </p>
+            <button onClick={() => setShowRedirectModal(false)}>Cancelar</button>
+          </div>
+        </div>
+      )}
+
       <style jsx>{`
         .package-finder {
           background: #0f0f1a;
@@ -379,7 +465,6 @@ export default function Home() {
         }
         .package-search-container {
           display: flex;
-          justify-content: center;
           gap: 10px;
           margin-bottom: 15px;
         }
@@ -399,7 +484,6 @@ export default function Home() {
         }
         .package-filters {
           display: flex;
-          justify-content: center;
           gap: 10px;
           margin-bottom: 20px;
         }
@@ -464,7 +548,7 @@ export default function Home() {
           left: 0;
           width: 100%;
           height: 100%;
-          background: rgba(0,0,0,0.8);
+          background: rgba(0, 0, 0, 0.8);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -476,99 +560,6 @@ export default function Home() {
           text-align: center;
         }
       `}</style>
-
-      {/* Buscador */}
-      <div className="package-search-container">
-        <input
-          type="text"
-          placeholder="Buscar aplicaciones o juegos..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          onKeyUp={(e) => e.key === "Enter" && performSearch()}
-        />
-        <button onClick={performSearch}>Buscar</button>
-      </div>
-
-      {/* Filtros */}
-      <div className="package-filters">
-        {[
-          { key: "all", label: "Todos" },
-          { key: "app", label: "Aplicaciones" },
-          { key: "game", label: "Juegos" },
-        ].map((f) => (
-          <button
-            key={f.key}
-            className={`package-filter-btn ${
-              currentFilter === f.key ? "active" : ""
-            }`}
-            onClick={() => setCurrentFilter(f.key)}
-          >
-            {f.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Header resultados */}
-      <div className="package-results-header">
-        <div>{results.length} resultados</div>
-        <select
-          className="package-sort-select"
-          value={currentSort}
-          onChange={(e) => setCurrentSort(e.target.value)}
-        >
-          <option value="relevance">Relevancia</option>
-          <option value="popularity">Popularidad</option>
-          <option value="rating">Puntuación</option>
-        </select>
-      </div>
-
-      {/* Resultados */}
-      <div className="package-apps-grid">
-        {loading && <p>Cargando...</p>}
-        {!loading &&
-          results.map((item) => (
-            <div className="package-app-card" key={item.id}>
-              <div className="package-app-header">
-                <div className="package-app-icon">
-                  <img src={item.iconUrl} alt={item.name} />
-                </div>
-                <div>
-                  <div>{item.name}</div>
-                  <div>{item.developer}</div>
-                </div>
-              </div>
-              <p>{item.description}</p>
-              <div>{item.packageName}</div>
-              <button onClick={() => copyToClipboard(item.packageName)}>
-                Copiar paquete
-              </button>
-              <button onClick={() => redirectToDownload(item.packageName)}>
-                Descargar APK
-              </button>
-              <div className="package-app-footer">
-                <span>⭐ {item.rating}</span>
-                <span>{item.downloads.toLocaleString()} descargas</span>
-                <span>{item.category}</span>
-              </div>
-            </div>
-          ))}
-      </div>
-
-      {/* Notificación */}
-      {showNotification && <div className="notification">📋 Paquete copiado</div>}
-
-      {/* Modal */}
-      {showRedirectModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <h3>Redireccionando</h3>
-            <p>
-              Serás redirigido a descargar <b>{redirectPackage}</b>
-            </p>
-            <button onClick={() => setShowRedirectModal(false)}>Cancelar</button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
