@@ -1,0 +1,821 @@
+ <!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de Paquetes - Google Play</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #202124;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #4285F4, #34A853);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 32px;
+            margin-right: 12px;
+        }
+        
+        h1 {
+            font-size: 28px;
+            font-weight: 500;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-top: 8px;
+        }
+        
+        .search-section {
+            padding: 25px;
+            background-color: white;
+            border-bottom: 1px solid #e8eaed;
+        }
+        
+        .search-container {
+            display: flex;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        #search-input {
+            flex: 1;
+            padding: 16px 20px;
+            border: 1px solid #dfe1e5;
+            border-radius: 8px 0 0 8px;
+            font-size: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        #search-input:focus {
+            outline: none;
+            border-color: #4285F4;
+        }
+        
+        #search-btn {
+            padding: 0 24px;
+            background-color: #4285F4;
+            color: white;
+            border: none;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+        
+        #search-btn:hover {
+            background-color: #3367d6;
+        }
+        
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            background-color: #f1f3f4;
+            border: none;
+            border-radius: 18px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn:hover {
+            background-color: #e8f0fe;
+            color: #4285F4;
+        }
+        
+        .filter-btn.active {
+            background-color: #e8f0fe;
+            color: #4285F4;
+            font-weight: 500;
+        }
+        
+        .results-section {
+            padding: 20px;
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .results-count {
+            font-size: 16px;
+            color: #5f6368;
+        }
+        
+        .sort-select {
+            padding: 8px 12px;
+            border: 1px solid #dfe1e5;
+            border-radius: 4px;
+            background-color: white;
+            font-size: 14px;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .app-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #e8eaed;
+        }
+        
+        .app-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .app-header {
+            display: flex;
+            padding: 16px;
+            align-items: center;
+            border-bottom: 1px solid #f1f3f4;
+        }
+        
+        .app-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #4285F4, #34A853);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin-right: 16px;
+        }
+        
+        .app-title {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .app-developer {
+            font-size: 14px;
+            color: #5f6368;
+            margin-top: 4px;
+        }
+        
+        .app-body {
+            padding: 16px;
+        }
+        
+        .package-id {
+            background-color: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 14px;
+            word-break: break-all;
+            margin-bottom: 12px;
+            border: 1px dashed #dadce0;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .copy-btn, .download-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .copy-btn {
+            background-color: #f1f3f4;
+        }
+        
+        .copy-btn:hover {
+            background-color: #e8f0fe;
+            color: #4285F4;
+        }
+        
+        .download-btn {
+            background-color: #34A853;
+            color: white;
+        }
+        
+        .download-btn:hover {
+            background-color: #2E8B47;
+        }
+        
+        .app-footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background-color: #f8f9fa;
+            border-top: 1px solid #f1f3f4;
+            font-size: 14px;
+            color: #5f6368;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #5f6368;
+            grid-column: 1 / -1;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 30px;
+            grid-column: 1 / -1;
+            color: #5f6368;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            background-color: #34A853;
+            color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+        
+        .notification.show {
+            opacity: 1;
+        }
+        
+        .redirect-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .redirect-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .modal-content h2 {
+            margin-bottom: 15px;
+            color: #4285F4;
+        }
+        
+        .modal-content p {
+            margin-bottom: 25px;
+            color: #5f6368;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s;
+        }
+        
+        .modal-btn.confirm {
+            background-color: #34A853;
+            color: white;
+        }
+        
+        .modal-btn.confirm:hover {
+            background-color: #2E8B47;
+        }
+        
+        .modal-btn.cancel {
+            background-color: #f1f3f4;
+            color: #5f6368;
+        }
+        
+        .modal-btn.cancel:hover {
+            background-color: #dfe1e5;
+        }
+        
+        @media (max-width: 768px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-container {
+                flex-direction: column;
+            }
+            
+            #search-input {
+                border-radius: 8px;
+                margin-bottom: 12px;
+            }
+            
+            #search-btn {
+                border-radius: 8px;
+                padding: 12px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .modal-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">📱</div>
+                <h1>Buscador de Paquetes Google Play</h1>
+            </div>
+            <p class="subtitle">Encuentra aplicaciones y juegos para obtener sus nombres de paquetes</p>
+        </header>
+        
+        <section class="search-section">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Buscar aplicaciones o juegos...">
+                <button id="search-btn">Buscar</button>
+            </div>
+            
+            <div class="filters">
+                <button class="filter-btn active" data-filter="all">Todos</button>
+                <button class="filter-btn" data-filter="app">Aplicaciones</button>
+                <button class="filter-btn" data-filter="game">Juegos</button>
+                <button class="filter-btn" data-filter="popular">Populares</button>
+            </div>
+        </section>
+        
+        <section class="results-section">
+            <div class="results-header">
+                <div class="results-count" id="results-count">0 resultados</div>
+                <select class="sort-select" id="sort-select">
+                    <option value="relevance">Relevancia</option>
+                    <option value="popularity">Popularidad</option>
+                    <option value="rating">Puntuación</option>
+                </select>
+            </div>
+            
+            <div class="results-grid" id="results-container">
+                <div class="no-results">
+                    <p>Ingresa un término de búsqueda para encontrar aplicaciones y sus nombres de paquetes</p>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <div class="notification" id="notification">Paquete copiado al portapapeles</div>
+    
+    <div class="redirect-modal" id="redirect-modal">
+        <div class="modal-content">
+            <h2>Redireccionando para descarga</h2>
+            <p>Has copiado el nombre del paquete: <strong id="copied-package"></strong></p>
+            <p>Serás redirigido a Nebhula APK donde podrás descargar la aplicación.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn confirm" id="confirm-redirect">Continuar</button>
+                <button class="modal-btn cancel" id="cancel-redirect">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Base de datos simulada de aplicaciones y juegos con sus package names
+        const appsAndGames = [
+            {
+                id: 1,
+                name: "WhatsApp Messenger",
+                packageName: "com.whatsapp",
+                description: "Aplicación de mensajería instantánea",
+                type: "app",
+                category: "Comunicación",
+                rating: 4.5,
+                downloads: "5B+",
+                developer: "WhatsApp LLC",
+                popularity: 100
+            },
+            {
+                id: 2,
+                name: "Candy Crush Saga",
+                packageName: "com.king.candycrushsaga",
+                description: "Juego de puzle con dulces",
+                type: "game",
+                category: "Puzzle",
+                rating: 4.6,
+                downloads: "1B+",
+                developer: "King",
+                popularity: 95
+            },
+            {
+                id: 3,
+                name: "Spotify - Música y Podcasts",
+                packageName: "com.spotify.music",
+                description: "Escucha millones de canciones",
+                type: "app",
+                category: "Música",
+                rating: 4.8,
+                downloads: "1B+",
+                developer: "Spotify AB",
+                popularity: 90
+            },
+            {
+                id: 4,
+                name: "Minecraft",
+                packageName: "com.mojang.minecraftpe",
+                description: "Juego de aventuras y construcción",
+                type: "game",
+                category: "Aventura",
+                rating: 4.7,
+                downloads: "500M+",
+                developer: "Mojang",
+                popularity: 85
+            },
+            {
+                id: 5,
+                name: "Instagram",
+                packageName: "com.instagram.android",
+                description: "Comparte fotos y videos",
+                type: "app",
+                category: "Redes Sociales",
+                rating: 4.4,
+                downloads: "5B+",
+                developer: "Instagram",
+                popularity: 98
+            },
+            {
+                id: 6,
+                name: "Among Us",
+                packageName: "com.innersloth.amongus",
+                description: "Encuentra al impostor",
+                type: "game",
+                category: "Estrategia",
+                rating: 4.5,
+                downloads: "500M+",
+                developer: "InnerSloth LLC",
+                popularity: 88
+            },
+            {
+                id: 7,
+                name: "Adobe Photoshop Express",
+                packageName: "com.adobe.psmobile",
+                description: "Editor de fotos",
+                type: "app",
+                category: "Foto",
+                rating: 4.3,
+                downloads: "500M+",
+                developer: "Adobe",
+                popularity: 80
+            },
+            {
+                id: 8,
+                name: "Asphalt 9: Legends",
+                packageName: "com.gameloft.android.ANMP.GloftA9HM",
+                description: "Juego de carreras",
+                type: "game",
+                category: "Carreras",
+                rating: 4.6,
+                downloads: "100M+",
+                developer: "Gameloft SE",
+                popularity: 82
+            },
+            {
+                id: 9,
+                name: "Netflix",
+                packageName: "com.netflix.mediaclient",
+                description: "Servicio de streaming",
+                type: "app",
+                category: "Entretenimiento",
+                rating: 4.6,
+                downloads: "1B+",
+                developer: "Netflix, Inc.",
+                popularity: 92
+            },
+            {
+                id: 10,
+                name: "Clash of Clans",
+                packageName: "com.supercell.clashofclans",
+                description: "Juego de estrategia",
+                type: "game",
+                category: "Estrategia",
+                rating: 4.7,
+                downloads: "500M+",
+                developer: "Supercell",
+                popularity: 89
+            },
+            {
+                id: 11,
+                name: "Telegram",
+                packageName: "org.telegram.messenger",
+                description: "Mensajería rápida y segura",
+                type: "app",
+                category: "Comunicación",
+                rating: 4.3,
+                downloads: "500M+",
+                developer: "Telegram FZ-LLC",
+                popularity: 87
+            },
+            {
+                id: 12,
+                name: "Subway Surfers",
+                packageName: "com.kiloo.subwaysurf",
+                description: "Juego de carreras sin fin",
+                type: "game",
+                category: "Carreras",
+                rating: 4.5,
+                downloads: "1B+",
+                developer: "SYBO Games",
+                popularity: 90
+            }
+        ];
+
+        // URL de la página de descarga de APK
+        const APK_DOWNLOAD_URL = "https://nebhulapk.vercel.app/es  ";
+
+        // Elementos del DOM
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const sortSelect = document.getElementById('sort-select');
+        const resultsContainer = document.getElementById('results-container');
+        const resultsCount = document.getElementById('results-count');
+        const notification = document.getElementById('notification');
+        const redirectModal = document.getElementById('redirect-modal');
+        const copiedPackageElement = document.getElementById('copied-package');
+        const confirmRedirectBtn = document.getElementById('confirm-redirect');
+        const cancelRedirectBtn = document.getElementById('cancel-redirect');
+        
+        // Variables globales
+        let currentFilter = 'all';
+        let currentSort = 'relevance';
+        let lastCopiedPackage = '';
+        
+        // Inicializar
+        initializeEventListeners();
+        performSearch();
+        
+        function initializeEventListeners() {
+            // Eventos de búsqueda
+            searchBtn.addEventListener('click', performSearch);
+            searchInput.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') performSearch();
+            });
+            
+            // Filtros
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    performSearch();
+                });
+            });
+            
+            // Ordenación
+            sortSelect.addEventListener('change', () => {
+                currentSort = sortSelect.value;
+                performSearch();
+            });
+            
+            // Modal de redirección
+            confirmRedirectBtn.addEventListener('click', () => {
+                redirectToDownloadPage(lastCopiedPackage);
+            });
+            
+            cancelRedirectBtn.addEventListener('click', () => {
+                redirectModal.classList.remove('show');
+            });
+        }
+        
+        // Función de búsqueda
+        function performSearch() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            
+            // Mostrar carga
+            resultsContainer.innerHTML = '<div class="loading">Buscando aplicaciones...</div>';
+            
+            // Simular retraso de búsqueda
+            setTimeout(() => {
+                let filteredResults = appsAndGames.filter(item => {
+                    // Filtrar por término de búsqueda
+                    const matchesSearch = searchTerm === '' || 
+                                         item.name.toLowerCase().includes(searchTerm) || 
+                                         item.description.toLowerCase().includes(searchTerm) ||
+                                         item.packageName.toLowerCase().includes(searchTerm);
+                    
+                    // Filtrar por tipo seleccionado
+                    let matchesFilter = true;
+                    if (currentFilter !== 'all') {
+                        if (currentFilter === 'popular') {
+                            matchesFilter = item.popularity > 90;
+                        } else {
+                            matchesFilter = item.type === currentFilter;
+                        }
+                    }
+                    
+                    return matchesSearch && matchesFilter;
+                });
+                
+                // Ordenar resultados
+                filteredResults = sortResults(filteredResults, currentSort);
+                
+                // Mostrar resultados
+                displayResults(filteredResults);
+            }, 500);
+        }
+        
+        // Función para ordenar resultados
+        function sortResults(results, sortBy) {
+            switch(sortBy) {
+                case 'popularity':
+                    return [...results].sort((a, b) => b.popularity - a.popularity);
+                case 'rating':
+                    return [...results].sort((a, b) => b.rating - a.rating);
+                case 'relevance':
+                default:
+                    return results;
+            }
+        }
+        
+        // Función para mostrar resultados
+        function displayResults(results) {
+            resultsContainer.innerHTML = '';
+            resultsCount.textContent = `${results.length} resultados`;
+            
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <h3>No se encontraron aplicaciones</h3>
+                        <p>Intenta con otros términos de búsqueda o filtros</p>
+                    </div>`;
+                return;
+            }
+            
+            results.forEach(item => {
+                const appCard = document.createElement('div');
+                appCard.className = 'app-card';
+                
+                // Obtener iniciales para el icono
+                const initials = item.name.split(' ').map(word => word[0]).join('').toUpperCase();
+                
+                appCard.innerHTML = `
+                    <div class="app-header">
+                        <div class="app-icon">${initials.substring(0, 2)}</div>
+                        <div>
+                            <div class="app-title">${item.name}</div>
+                            <div class="app-developer">${item.developer}</div>
+                        </div>
+                    </div>
+                    <div class="app-body">
+                        <p>${item.description}</p>
+                        <div class="package-id">${item.packageName}</div>
+                        <div class="action-buttons">
+                            <button class="copy-btn" data-package="${item.packageName}">
+                                <span>Copiar paquete</span>
+                            </button>
+                            <button class="download-btn" data-package="${item.packageName}">
+                                <span>Descargar APK</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="app-footer">
+                        <span>⭐ ${item.rating}</span>
+                        <span>${item.downloads}</span>
+                        <span>${item.category}</span>
+                    </div>
+                `;
+                
+                resultsContainer.appendChild(appCard);
+            });
+            
+            // Añadir event listeners a los botones de copiar
+            document.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const packageName = btn.dataset.package;
+                    copyToClipboard(packageName);
+                    showNotification();
+                    showRedirectModal(packageName);
+                });
+            });
+            
+            // Añadir event listeners a los botones de descargar
+            document.querySelectorAll('.download-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const packageName = btn.dataset.package;
+                    redirectToDownloadPage(packageName);
+                });
+            });
+        }
+        
+        // Función para copiar al portapapeles
+        function copyToClipboard(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+        }
+        
+        // Función para mostrar notificación
+        function showNotification() {
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
+        }
+        
+        // Función para mostrar el modal de redirección
+        function showRedirectModal(packageName) {
+            lastCopiedPackage = packageName;
+            copiedPackageElement.textContent = packageName;
+            redirectModal.classList.add('show');
+        }
+        
+        // Función para redirigir a la página de descarga
+        function redirectToDownloadPage(packageName) {
+            // Guardar el paquete en localStorage para que esté disponible en la página de destino
+            localStorage.setItem('lastCopiedPackage', packageName);
+            
+            // Redirigir a Nebhula APK con el paquete como parámetro
+            window.location.href = `${APK_DOWNLOAD_URL}?package=${encodeURIComponent(packageName)}`;
+        }
+    </script>
+</body>
+</html>
