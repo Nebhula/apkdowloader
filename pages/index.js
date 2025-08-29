@@ -301,7 +301,6 @@ export default function PackageFinder() {
   const modalRef = useRef(null);
   const notificationRef = useRef(null);
 
-  // Datos
   const packageAppsAndGames = [
     { id: 1, name: "WhatsApp", packageName: "com.whatsapp", description: "Mensajería instantánea segura con cifrado de extremo a extremo. Comparte mensajes, fotos, videos y realiza videollamadas con tus contactos.", type: "app", category: "Comunicación", rating: 4.5, downloads: "5B+", developer: "WhatsApp LLC", popularity: 100, iconUrl: "https://play-lh.googleusercontent.com/bYtqbOcTYOlgc6gqZ2rwb8lptHuwlNE75zYJu6Bn076-hTmvd96HH-6v7S0YUAAJXoJN" },
     { id: 2, name: "Candy Crush Saga", packageName: "com.king.candycrushsaga", description: "Un adictivo juego de rompecabezas con cientos de niveles. Combina dulces del mismo color en filas de tres o más.", type: "game", category: "Puzzle", rating: 4.6, downloads: "1B+", developer: "King", popularity: 95, iconUrl: "https://play-lh.googleusercontent.com/TLUeelx8wcpEzf3hoqeLxPs3ai1tdGtAZTIFkNqy3gbDp1NPpNFTOzSFJDvZ9narFS0" },
@@ -390,7 +389,7 @@ export default function PackageFinder() {
         appCard.innerHTML = `
           <div class="package-app-header">
             <div class="package-app-icon">
-              <img src="${item.iconUrl.trim()}" alt="${item.name}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjNDQ0Ii8+PHRleHQgeD0iMzIiIHk9IjM4IiBmb250LWZhbWlseT0iUm9ib3RvIiBmb250LXNpemU9IjIwIiBmaWxsPSIjZWUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPiR7aXRlbS5uYW1lLnN1YnN0cmluZygwLDEpfX08L3RleHQ+PC9zdmc+'">
+              <img src="${item.iconUrl.trim()}" alt="${item.name}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjNDQ0Ii8+PHRleHQgeD0iMzIiIHk9IjM4IiBmb250LWZhbWlseT0iUm9ib3RvIiBmb250LXNpemU9IjIwIiBmaWxsPSIjZWUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPiR7aXRlbS5uYW1lWzBdLnRvVXBwZXJDYXNlKCh9PC90ZXh0Pjwvc3ZnPg=='">
             </div>
             <div>
               <div class="package-app-title">${item.name}</div>
@@ -436,7 +435,7 @@ export default function PackageFinder() {
           const id = parseInt(btn.dataset.id);
           const app = packageAppsAndGames.find(a => a.id === id);
           if (app) {
-            copyToClipboard(app.packageName);
+            navigator.clipboard.writeText(app.packageName);
             showNotification();
             document.getElementById('modal-icon').src = app.iconUrl;
             document.getElementById('modal-name').textContent = app.name;
@@ -466,15 +465,9 @@ export default function PackageFinder() {
           e.preventDefault();
           const pkg = link.dataset.package;
           const version = link.dataset.version;
-          copyToClipboard(`${pkg} (v${version})`);
+          navigator.clipboard.writeText(`${pkg} (v${version})`);
           alert(`Versión copiada: ${pkg} (v${version})`);
         };
-      });
-    };
-
-    const copyToClipboard = (text) => {
-      navigator.clipboard.writeText(text).catch(err => {
-        console.error('Error al copiar:', err);
       });
     };
 
@@ -518,8 +511,10 @@ export default function PackageFinder() {
 
   return (
     <>
-      {/* Estilos */}
-      <style jsx>{`
+      {/* CSS Global */}
+      <style jsx global>{`
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
         * {
           box-sizing: border-box;
           margin: 0;
@@ -1052,7 +1047,6 @@ export default function PackageFinder() {
     </>
   );
 }
-
 
 
 
