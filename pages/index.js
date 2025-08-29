@@ -331,7 +331,6 @@ export default function PackageFinder() {
     let results = [];
     let currentIndex = 0;
     const itemsPerPage = 6;
-    let lastCopiedPackage = '';
 
     const performSearch = () => {
       const searchTerm = (searchInput?.value || '').toLowerCase().trim();
@@ -350,32 +349,25 @@ export default function PackageFinder() {
           return matchesSearch && matchesFilter;
         });
 
-        filtered = sortResults(filtered, currentSort);
-        displayResults(filtered);
+        filtered = filtered.sort((a, b) => {
+          if (currentSort === 'popularity') return b.popularity - a.popularity;
+          if (currentSort === 'rating') return b.rating - a.rating;
+          return 0;
+        });
+
+        results = filtered;
+        currentIndex = 0;
+        if (appsGrid) appsGrid.innerHTML = '';
+        if (resultsCount) resultsCount.textContent = `${filtered.length} resultados`;
+
+        if (filtered.length === 0) {
+          if (appsGrid) appsGrid.innerHTML = '<div class="package-no-results"><p>No se encontraron resultados.</p></div>';
+          if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+          return;
+        }
+
+        showNextResults();
       }, 300);
-    };
-
-    const sortResults = (list, sortBy) => {
-      switch (sortBy) {
-        case 'popularity': return list.sort((a, b) => b.popularity - a.popularity);
-        case 'rating': return list.sort((a, b) => b.rating - a.rating);
-        default: return list;
-      }
-    };
-
-    const displayResults = (list) => {
-      results = list;
-      currentIndex = 0;
-      if (appsGrid) appsGrid.innerHTML = '';
-      if (resultsCount) resultsCount.textContent = `${list.length} resultados`;
-
-      if (list.length === 0) {
-        if (appsGrid) appsGrid.innerHTML = '<div class="package-no-results"><p>Ingresa un término de búsqueda para encontrar aplicaciones</p></div>';
-        if (loadMoreBtn) loadMoreBtn.style.display = 'none';
-        return;
-      }
-
-      showNextResults();
     };
 
     const showNextResults = () => {
@@ -389,7 +381,7 @@ export default function PackageFinder() {
         appCard.innerHTML = `
           <div class="package-app-header">
             <div class="package-app-icon">
-              <img src="${item.iconUrl.trim()}" alt="${item.name}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjNDQ0Ii8+PHRleHQgeD0iMzIiIHk9IjM4IiBmb250LWZhbWlseT0iUm9ib3RvIiBmb250LXNpemU9IjIwIiBmaWxsPSIjZWUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPiR7aXRlbS5uYW1lWzBdLnRvVXBwZXJDYXNlKCh9PC90ZXh0Pjwvc3ZnPg=='">
+              <img src="${item.iconUrl.trim()}" alt="${item.name}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIGZpbGw9IiM0NDQ0NDQiLz48dGV4dCB4PSIzMiIgeT0iMzgiIGZvbnQtZmFtaWx5PSJSb2JvdG8iIGZvbnQtc2l6ZT0iMjAiIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPiR7aXRlbS5uYW1lWzBdPC90ZXh0Pjwvc3ZnPg=='">
             </div>
             <div>
               <div class="package-app-title">${item.name}</div>
@@ -425,7 +417,6 @@ export default function PackageFinder() {
 
       currentIndex = end;
       if (loadMoreBtn) loadMoreBtn.style.display = currentIndex >= results.length ? 'none' : 'inline-flex';
-
       attachButtonEvents();
     };
 
@@ -435,16 +426,17 @@ export default function PackageFinder() {
           const id = parseInt(btn.dataset.id);
           const app = packageAppsAndGames.find(a => a.id === id);
           if (app) {
-            navigator.clipboard.writeText(app.packageName);
-            showNotification();
-            document.getElementById('modal-icon').src = app.iconUrl;
-            document.getElementById('modal-name').textContent = app.name;
-            document.getElementById('modal-developer').textContent = app.developer;
-            document.querySelector('#modal-category .cat-text').textContent = app.category;
-            document.getElementById('modal-rating').textContent = app.rating;
-            document.getElementById('modal-downloads').textContent = app.downloads;
-            lastCopiedPackage = app.packageName;
-            modal.classList.add('show');
+            navigator.clipboard.writeText(app.packageName).then(() => {
+              notification.classList.add('show');
+              setTimeout(() => notification.classList.remove('show'), 2000);
+              document.getElementById('modal-icon').src = app.iconUrl;
+              document.getElementById('modal-name').textContent = app.name;
+              document.getElementById('modal-developer').textContent = app.developer;
+              document.querySelector('#modal-category .cat-text').textContent = app.category;
+              document.getElementById('modal-rating').textContent = app.rating;
+              document.getElementById('modal-downloads').textContent = app.downloads;
+              modal.classList.add('show');
+            });
           }
         };
       });
@@ -469,13 +461,6 @@ export default function PackageFinder() {
           alert(`Versión copiada: ${pkg} (v${version})`);
         };
       });
-    };
-
-    const showNotification = () => {
-      if (notification) {
-        notification.classList.add('show');
-        setTimeout(() => notification.classList.remove('show'), 2000);
-      }
     };
 
     // Inicializar
@@ -504,478 +489,490 @@ export default function PackageFinder() {
     });
 
     document.getElementById('modal-download-btn')?.addEventListener('click', () => {
-      window.location.href = `${apkDownloadUrl}?package=${encodeURIComponent(lastCopiedPackage)}`;
+      const currentPkg = packageAppsAndGames.find(a => a.id === parseInt(document.querySelector('.package-download-btn')?.dataset.id))?.packageName;
+      if (currentPkg) {
+        window.location.href = `${apkDownloadUrl}?package=${encodeURIComponent(currentPkg)}`;
+      }
     });
 
   }, []);
 
   return (
     <>
-      {/* CSS Global */}
-      <style jsx global>{`
-        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+      {/* Font Awesome CDN */}
+      <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        crossOrigin="anonymous"
+      />
 
-        * {
-          box-sizing: border-box;
-          margin: 0;
-          padding: 0;
-          font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
-        }
-        body {
-          background: #000;
-          overflow-x: hidden;
-        }
-        .package-finder-container {
-          width: 100%;
-          max-width: 100%;
-          margin: 0;
-          background: linear-gradient(135deg, #0A0A0A, #121212, #1E1E1E);
-          border-radius: 0;
-          overflow: hidden;
-          padding: 0;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-        }
-        .package-finder-search {
-          padding: 24px 20px;
-          background: rgba(10, 10, 10, 0.9);
-        }
-        .package-search-container {
-          display: flex;
-          width: 100%;
-          margin-bottom: 20px;
-        }
-        #package-search-input {
-          flex: 1;
-          padding: 15px 20px;
-          border: 2px solid #4CAF50;
-          border-right: none;
-          border-radius: 12px 0 0 12px;
-          font-size: 17px;
-          background: rgba(30, 30, 30, 0.6);
-          color: #E0E0E0;
-        }
-        #package-search-input:focus {
-          outline: none;
-          border-color: #66BB6A;
-          box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
-        }
-        #package-search-btn {
-          padding: 0 16px;
-          background: linear-gradient(90deg, #4CAF50, #66BB6A);
-          color: white;
-          border: none;
-          border-radius: 0 12px 12px 0;
-          cursor: pointer;
-          font-size: 17px;
-          font-weight: bold;
-        }
-        #package-search-btn:hover {
-          background: linear-gradient(90deg, #66BB6A, #4CAF50);
-          transform: scale(1.03);
-        }
-        .package-filters-container {
-          padding: 14px 0;
-          overflow-x: auto;
-          scrollbar-width: none;
-          -ms-overflow-style: none;
-        }
-        .package-filters-container::-webkit-scrollbar {
-          display: none;
-        }
-        .package-filters {
-          display: flex;
-          gap: 16px;
-          padding: 0 16px;
-          white-space: nowrap;
-        }
-        .package-filter-btn {
-          flex: 0 0 auto;
-          padding: 12px 28px;
-          background: rgba(38, 50, 56, 0.2);
-          color: #B0BEC5;
-          border: 1px solid #455A64;
-          border-radius: 30px;
-          cursor: pointer;
-          font-size: 16px;
-          font-weight: 500;
-          transition: all 0.3s;
-        }
-        .package-filter-btn:hover {
-          background: rgba(38, 50, 56, 0.4);
-          color: #E0E0E0;
-        }
-        .package-filter-btn.active {
-          background: linear-gradient(90deg, #4CAF50, #66BB6A);
-          color: white;
-          font-weight: bold;
-          box-shadow: 0 0 15px rgba(76, 175, 80, 0.4);
-        }
-        .package-results-section {
-          padding: 24px 20px;
-          background: rgba(16, 16, 16, 0.95);
-        }
-        .package-results-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 24px;
-        }
-        .package-results-count {
-          font-size: 18px;
-          color: #66BB6A;
-          font-weight: bold;
-          text-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
-        }
-        .package-sort-select {
-          padding: 10px 18px;
-          border: 1px solid #4CAF50;
-          border-radius: 25px;
-          background: rgba(30, 30, 30, 0.6);
-          color: #E0E0E0;
-          font-size: 16px;
-          min-width: 140px;
-        }
-        .package-apps-grid {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 24px;
-          padding: 0;
-        }
-        .package-app-card {
-          background: linear-gradient(to bottom, #1B1B1B, #141414);
-          border-radius: 18px;
-          overflow: hidden;
-          box-shadow: 0 6px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 0, 0, 0.4);
-          transition: transform 0.3s, box-shadow 0.3s;
-          border: none;
-          width: 100%;
-        }
-        .package-app-card:hover {
-          transform: translateY(-6px);
-          box-shadow: 0 12px 35px rgba(76, 175, 80, 0.2), 0 0 30px rgba(67, 99, 66, 0.3);
-        }
-        .package-app-header {
-          display: flex;
-          padding: 24px;
-          align-items: center;
-          border-bottom: 1px solid rgba(76, 175, 80, 0.1);
-          background: rgba(40, 40, 40, 0.1);
-        }
-        .package-app-icon {
-          width: 70px;
-          height: 70px;
-          border-radius: 18px;
-          background: #0A0A0A;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-right: 18px;
-          overflow: hidden;
-          box-shadow: 0 0 18px rgba(76, 175, 80, 0.4);
-        }
-        .package-app-icon img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-        .package-app-title {
-          font-size: 20px;
-          font-weight: bold;
-          color: #E0E0E0;
-        }
-        .package-app-developer {
-          font-size: 15px;
-          color: #78909C;
-          margin-top: 5px;
-        }
-        .package-app-body {
-          padding: 24px;
-        }
-        .package-app-description {
-          color: #B0BEC5;
-          font-size: 15px;
-          margin-bottom: 18px;
-          line-height: 1.6;
-        }
-        .package-id {
-          background: rgba(20, 20, 20, 0.7);
-          padding: 16px;
-          border-radius: 10px;
-          font-family: 'Courier New', monospace;
-          font-size: 15px;
-          word-break: break-all;
-          margin-bottom: 18px;
-          border: 1px dashed #4CAF50;
-          color: #66BB6A;
-        }
-        .package-action-buttons {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-        }
-        .package-download-btn {
-          flex: 1;
-          padding: 13px;
-          border: none;
-          border-radius: 8px;
-          cursor: pointer;
-          font-size: 15px;
-          transition: all 0.3s;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          font-weight: bold;
-          background: linear-gradient(90deg, #4CAF50, #66BB6A);
-          color: white;
-        }
-        .package-download-btn:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
-        }
-        .package-versions-toggle {
-          flex: 1;
-          padding: 13px;
-          border: 1px solid #455A64;
-          border-radius: 8px;
-          cursor: pointer;
-          font-size: 15px;
-          transition: all 0.3s;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          font-weight: bold;
-          background: #263238;
-          color: #B0BEC5;
-        }
-        .package-versions-toggle:hover {
-          background: #37474F;
-          color: #E0E0E0;
-          transform: translateY(-2px);
-          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        .package-versions-list {
-          max-height: 0;
-          overflow: hidden;
-          transition: max-height 0.4s ease;
-          margin-top: 10px;
-          border-top: 1px solid rgba(76, 175, 80, 0.1);
-          padding-top: 10px;
-        }
-        .package-versions-list.show {
-          max-height: 300px;
-        }
-        .package-versions-list a {
-          display: block;
-          padding: 10px 15px;
-          background: rgba(38, 50, 56, 0.1);
-          margin: 6px 0;
-          border-radius: 8px;
-          color: #66BB6A;
-          font-size: 14px;
-          text-decoration: none;
-          transition: all 0.3s;
-        }
-        .package-versions-list a:hover {
-          background: rgba(76, 175, 80, 0.1);
-          transform: scale(1.02);
-          color: #4CAF50;
-        }
-        .package-app-footer {
-          display: flex;
-          justify-content: space-between;
-          padding: 18px 24px;
-          background: rgba(10, 10, 10, 0.6);
-          border-top: 1px solid rgba(76, 175, 80, 0.1);
-          font-size: 15px;
-          color: #78909C;
-        }
-        .package-no-results {
-          text-align: center;
-          padding: 60px 20px;
-          color: #B0BEC5;
-          width: 100%;
-          font-size: 18px;
-          grid-column: 1 / -1;
-        }
-        .package-loading {
-          text-align: center;
-          padding: 60px 20px;
-          color: #B0BEC5;
-          width: 100%;
-          font-size: 18px;
-          grid-column: 1 / -1;
-        }
-        .package-notification {
-          position: fixed;
-          bottom: 24px;
-          right: 24px;
-          padding: 16px 30px;
-          background: linear-gradient(90deg, #4CAF50, #66BB6A);
-          color: white;
-          border-radius: 12px;
-          box-shadow: 0 5px 20px rgba(76, 175, 80, 0.5);
-          opacity: 0;
-          transition: opacity 0.4s;
-          z-index: 1000;
-          font-size: 16px;
-          font-weight: bold;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-        .package-notification.show {
-          opacity: 1;
-        }
-        .package-download-modal {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-color: rgba(0, 0, 0, 0.95);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 2000;
-          opacity: 0;
-          visibility: hidden;
-          transition: opacity 0.3s, visibility 0.3s;
-        }
-        .package-download-modal.show {
-          opacity: 1;
-          visibility: visible;
-        }
-        .package-modal-content {
-          background: linear-gradient(to bottom, #1B1B1B, #141414);
-          padding: 32px;
-          border-radius: 20px;
-          max-width: 90%;
-          width: 90%;
-          max-height: 90vh;
-          overflow-y: auto;
-          color: white;
-          box-shadow: 0 15px 40px rgba(76, 175, 80, 0.3);
-          border: none;
-          text-align: center;
-        }
-        .package-modal-content img {
-          width: 90px;
-          height: 90px;
-          border-radius: 18px;
-          margin-bottom: 18px;
-          box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
-        }
-        .package-modal-content h3 {
-          font-size: 26px;
-          margin-bottom: 8px;
-          color: #E0E0E0;
-        }
-        .developer {
-          color: #78909C;
-          font-size: 16px;
-          margin-bottom: 20px;
-        }
-        .package-modal-info {
-          display: flex;
-          justify-content: space-around;
-          font-size: 15px;
-          color: #B0BEC5;
-          margin: 16px 0;
-          flex-wrap: wrap;
-          gap: 12px;
-        }
-        .package-modal-info span {
-          background: rgba(76, 175, 80, 0.15);
-          padding: 8px 16px;
-          border-radius: 24px;
-          font-size: 14px;
-          display: flex;
-          align-items: center;
-          gap: 6px;
-        }
-        .package-modal-instruction {
-          background: rgba(76, 175, 80, 0.1);
-          border: 1px solid rgba(76, 175, 80, 0.3);
-          border-radius: 12px;
-          padding: 20px;
-          margin: 20px 0;
-          font-size: 16px;
-          color: #66BB6A;
-          font-weight: 500;
-          line-height: 1.6;
-          text-align: center;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 10px;
-        }
-        .package-modal-actions {
-          display: flex;
-          gap: 16px;
-          justify-content: center;
-          margin-top: 24px;
-        }
-        .package-modal-btn-primary,
-        .package-modal-btn-close {
-          padding: 14px 28px;
-          border: none;
-          border-radius: 10px;
-          cursor: pointer;
-          font-size: 17px;
-          font-weight: bold;
-          width: 100%;
-        }
-        .package-modal-btn-primary {
-          background: linear-gradient(90deg, #4CAF50, #66BB6A);
-          color: white;
-        }
-        .package-modal-btn-close {
-          background: #424242;
-          color: white;
-        }
-        .package-load-more-container {
-          text-align: center;
-          margin-top: 30px;
-        }
-        .package-load-more-btn {
-          padding: 16px 32px;
-          background: linear-gradient(90deg, #4CAF50, #66BB6A);
-          color: white;
-          border: none;
-          border-radius: 14px;
-          cursor: pointer;
-          font-size: 18px;
-          font-weight: bold;
-          transition: all 0.3s;
-          display: inline-flex;
-          align-items: center;
-          gap: 12px;
-          box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
-        }
-        .package-load-more-btn:hover {
-          transform: translateY(-3px);
-        }
-
-        @media (min-width: 768px) {
+      {/* Estilos Globales (seguro para Vercel) */}
+      <style jsx>{`
+        /* Este placeholder evita conflictos */
+      `}</style>
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', 'Segoe UI', Arial, sans-serif;
+          }
+          body {
+            background: #000;
+            overflow-x: hidden;
+          }
           .package-finder-container {
-            max-width: 96%;
-            margin: 20px auto;
-            border-radius: 20px;
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            background: linear-gradient(135deg, #0A0A0A, #121212, #1E1E1E);
+            border-radius: 0;
+            overflow: hidden;
+            padding: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+          }
+          .package-finder-search {
+            padding: 24px 20px;
+            background: rgba(10, 10, 10, 0.9);
+          }
+          .package-search-container {
+            display: flex;
+            width: 100%;
+            margin-bottom: 20px;
+          }
+          #package-search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #4CAF50;
+            border-right: none;
+            border-radius: 12px 0 0 12px;
+            font-size: 17px;
+            background: rgba(30, 30, 30, 0.6);
+            color: #E0E0E0;
+          }
+          #package-search-input:focus {
+            outline: none;
+            border-color: #66BB6A;
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.3);
+          }
+          #package-search-btn {
+            padding: 0 16px;
+            background: linear-gradient(90deg, #4CAF50, #66BB6A);
+            color: white;
+            border: none;
+            border-radius: 0 12px 12px 0;
+            cursor: pointer;
+            font-size: 17px;
+            font-weight: bold;
+          }
+          #package-search-btn:hover {
+            background: linear-gradient(90deg, #66BB6A, #4CAF50);
+            transform: scale(1.03);
+          }
+          .package-filters-container {
+            padding: 14px 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+          }
+          .package-filters-container::-webkit-scrollbar {
+            display: none;
+          }
+          .package-filters {
+            display: flex;
+            gap: 16px;
+            padding: 0 16px;
+            white-space: nowrap;
+          }
+          .package-filter-btn {
+            flex: 0 0 auto;
+            padding: 12px 28px;
+            background: rgba(38, 50, 56, 0.2);
+            color: #B0BEC5;
+            border: 1px solid #455A64;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s;
+          }
+          .package-filter-btn:hover {
+            background: rgba(38, 50, 56, 0.4);
+            color: #E0E0E0;
+          }
+          .package-filter-btn.active {
+            background: linear-gradient(90deg, #4CAF50, #66BB6A);
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.4);
+          }
+          .package-results-section {
+            padding: 24px 20px;
+            background: rgba(16, 16, 16, 0.95);
+          }
+          .package-results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+          }
+          .package-results-count {
+            font-size: 18px;
+            color: #66BB6A;
+            font-weight: bold;
+            text-shadow: 0 0 8px rgba(76, 175, 80, 0.3);
+          }
+          .package-sort-select {
+            padding: 10px 18px;
+            border: 1px solid #4CAF50;
+            border-radius: 25px;
+            background: rgba(30, 30, 30, 0.6);
+            color: #E0E0E0;
+            font-size: 16px;
+            min-width: 140px;
           }
           .package-apps-grid {
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            padding: 0;
+          }
+          .package-app-card {
+            background: linear-gradient(to bottom, #1B1B1B, #141414);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: none;
+            width: 100%;
+          }
+          .package-app-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 35px rgba(76, 175, 80, 0.2), 0 0 30px rgba(67, 99, 66, 0.3);
+          }
+          .package-app-header {
+            display: flex;
+            padding: 24px;
+            align-items: center;
+            border-bottom: 1px solid rgba(76, 175, 80, 0.1);
+            background: rgba(40, 40, 40, 0.1);
+          }
+          .package-app-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            background: #0A0A0A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 18px;
+            overflow: hidden;
+            box-shadow: 0 0 18px rgba(76, 175, 80, 0.4);
+          }
+          .package-app-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+          .package-app-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #E0E0E0;
+          }
+          .package-app-developer {
+            font-size: 15px;
+            color: #78909C;
+            margin-top: 5px;
+          }
+          .package-app-body {
+            padding: 24px;
+          }
+          .package-app-description {
+            color: #B0BEC5;
+            font-size: 15px;
+            margin-bottom: 18px;
+            line-height: 1.6;
+          }
+          .package-id {
+            background: rgba(20, 20, 20, 0.7);
+            padding: 16px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 15px;
+            word-break: break-all;
+            margin-bottom: 18px;
+            border: 1px dashed #4CAF50;
+            color: #66BB6A;
+          }
+          .package-action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+          }
+          .package-download-btn {
+            flex: 1;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: bold;
+            background: linear-gradient(90deg, #4CAF50, #66BB6A);
+            color: white;
+          }
+          .package-download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+          }
+          .package-versions-toggle {
+            flex: 1;
+            padding: 13px;
+            border: 1px solid #455A64;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: bold;
+            background: #263238;
+            color: #B0BEC5;
+          }
+          .package-versions-toggle:hover {
+            background: #37474F;
+            color: #E0E0E0;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+          }
+          .package-versions-list {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+            margin-top: 10px;
+            border-top: 1px solid rgba(76, 175, 80, 0.1);
+            padding-top: 10px;
+          }
+          .package-versions-list.show {
+            max-height: 300px;
+          }
+          .package-versions-list a {
+            display: block;
+            padding: 10px 15px;
+            background: rgba(38, 50, 56, 0.1);
+            margin: 6px 0;
+            border-radius: 8px;
+            color: #66BB6A;
+            font-size: 14px;
+            text-decoration: none;
+            transition: all 0.3s;
+          }
+          .package-versions-list a:hover {
+            background: rgba(76, 175, 80, 0.1);
+            transform: scale(1.02);
+            color: #4CAF50;
+          }
+          .package-app-footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 18px 24px;
+            background: rgba(10, 10, 10, 0.6);
+            border-top: 1px solid rgba(76, 175, 80, 0.1);
+            font-size: 15px;
+            color: #78909C;
+          }
+          .package-no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #B0BEC5;
+            width: 100%;
+            font-size: 18px;
+            grid-column: 1 / -1;
+          }
+          .package-loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #B0BEC5;
+            width: 100%;
+            font-size: 18px;
+            grid-column: 1 / -1;
+          }
+          .package-notification {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 16px 30px;
+            background: linear-gradient(90deg, #4CAF50, #66BB6A);
+            color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.5);
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: 1000;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+          }
+          .package-notification.show {
+            opacity: 1;
+          }
+          .package-download-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+          }
+          .package-download-modal.show {
+            opacity: 1;
+            visibility: visible;
           }
           .package-modal-content {
-            max-width: 600px;
+            background: linear-gradient(to bottom, #1B1B1B, #141414);
+            padding: 32px;
+            border-radius: 20px;
+            max-width: 90%;
             width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            color: white;
+            box-shadow: 0 15px 40px rgba(76, 175, 80, 0.3);
+            border: none;
+            text-align: center;
+          }
+          .package-modal-content img {
+            width: 90px;
+            height: 90px;
+            border-radius: 18px;
+            margin-bottom: 18px;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
+          }
+          .package-modal-content h3 {
+            font-size: 26px;
+            margin-bottom: 8px;
+            color: #E0E0E0;
+          }
+          .developer {
+            color: #78909C;
+            font-size: 16px;
+            margin-bottom: 20px;
+          }
+          .package-modal-info {
+            display: flex;
+            justify-content: space-around;
+            font-size: 15px;
+            color: #B0BEC5;
+            margin: 16px 0;
+            flex-wrap: wrap;
+            gap: 12px;
+          }
+          .package-modal-info span {
+            background: rgba(76, 175, 80, 0.15);
+            padding: 8px 16px;
+            border-radius: 24px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+          }
+          .package-modal-instruction {
+            background: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 16px;
+            color: #66BB6A;
+            font-weight: 500;
+            line-height: 1.6;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
           }
           .package-modal-actions {
-            flex-direction: row;
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            margin-top: 24px;
           }
-        }
-      `}</style>
+          .package-modal-btn-primary,
+          .package-modal-btn-close {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 17px;
+            font-weight: bold;
+            width: 100%;
+          }
+          .package-modal-btn-primary {
+            background: linear-gradient(90deg, #4CAF50, #66BB6A);
+            color: white;
+          }
+          .package-modal-btn-close {
+            background: #424242;
+            color: white;
+          }
+          .package-load-more-container {
+            text-align: center;
+            margin-top: 30px;
+          }
+          .package-load-more-btn {
+            padding: 16px 32px;
+            background: linear-gradient(90deg, #4CAF50, #66BB6A);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
+          }
+          .package-load-more-btn:hover {
+            transform: translateY(-3px);
+          }
+          @media (min-width: 768px) {
+            .package-finder-container {
+              max-width: 96%;
+              margin: 20px auto;
+              border-radius: 20px;
+            }
+            .package-apps-grid {
+              grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            }
+            .package-modal-content {
+              max-width: 600px;
+              width: 90%;
+            }
+            .package-modal-actions {
+              flex-direction: row;
+            }
+          }
+        `
+      }} />
 
       {/* HTML */}
       <div className="package-finder-container">
@@ -1031,7 +1028,10 @@ export default function PackageFinder() {
           </div>
           <div className="package-modal-instruction">
             <i className="fas fa-check-circle"></i>
-            <div>¡Perfecto! El nombre del paquete ya fue copiado al portapapeles.<br />Solo pégalo en la página de descarga para obtener la app.</div>
+            <div>
+              ¡Perfecto! El nombre del paquete ya fue copiado al portapapeles.<br />
+              Solo pégalo en la página de descarga para obtener la app.
+            </div>
           </div>
           <div className="package-modal-actions">
             <button id="modal-download-btn" className="package-modal-btn-primary">Descargar</button>
